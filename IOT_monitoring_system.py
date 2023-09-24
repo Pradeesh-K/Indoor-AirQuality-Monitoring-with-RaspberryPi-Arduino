@@ -26,17 +26,13 @@ import re
 import openpyxl
 
 # Email alert
-# definition of email IDs
-sender_email = 'pradeesh.nit@gmail.com'
-receive_email = 'keshav.875@gmail.com'
-receiver_email = 'ge84zon@mytum.de'     # Incoming emails from this ID will be read to update notifications
-password = 'qczkdohedxmeqizr'           # API password generated specifcally for email functionality
+# definition of email IDs. Enter your email IDs here. For receiver_email_notifications, enter a non-gmail ID.
+sender_email = ''
+receive_email = ''
+receiver_email_notifications = ''     # Incoming emails from this ID will be read to update notifications
+password = ''           # API password generated specifcally for email functionality
 
 def send_email(result):
-    sender_email = 'pradeesh.nit@gmail.com'
-    receive_email = 'keshav.875@gmail.com'
-    receiver_email = 'ge84zon@mytum.de'  # Incoming emails from this ID will be read to update notifications
-    password = 'qczkdohedxmeqizr'  # API password generated specifcally for email functionality
     subject = result
     body_text = result
     # HTML Formatting for a bettter visual appeal
@@ -72,18 +68,17 @@ def send_email(result):
         print('Error sending email:', str(e))
 
 # SMS Alert - for high priority
-# +14782862242         # SMS alert will be sent from this fixed number. To receive SMS, prior number verification via OTP is required
+#          # SMS alert will be sent from this fixed number. . To receive SMS, prior number verification via OTP is required
 
 def send_sms(result):
-    account_sid = 'AC4203cf620566720b4f512a33bb220ea1'
-    auth_token = '6515bb8d036489e782faf272163a4795'
+    account_sid = ''		# Register in Twilio to obtain Authentication credentials
+    auth_token = ''
     try:
         client = Client(account_sid, auth_token)
         message = client.messages.create(
-            from_='+14782862242',
+            from_='',
             body=result,
-            # to='+4915510576219'
-            to='+4917647388347'
+            to=''
         )
         print('SMS sent successfully!')
         print(message.sid)
@@ -176,7 +171,7 @@ def update_notifcation_status():
     con = imaplib.IMAP4_SSL(imap_url)
     con.login(user, pw)
     con.select('Inbox')
-    search_email = receiver_email
+    search_email = receiver_email_notifications
     result, data = con.search(None, 'FROM', f'"{search_email}"')
     latest_email_num = data[0].split()[-1]  # Get the latest email number
     typ, msg_data = con.fetch(latest_email_num, '(RFC822)')
